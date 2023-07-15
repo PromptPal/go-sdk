@@ -11,7 +11,7 @@ type apiRunPromptPayload struct {
 	UserId    string `json:"userId"`
 }
 
-type apiRunPromptResponse struct {
+type APIRunPromptResponse struct {
 	PromptID           string `json:"id"`
 	ResponseMessage    string `json:"message"`
 	ResponseTokenCount int    `json:"tokenCount"`

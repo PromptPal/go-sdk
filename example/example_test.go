@@ -30,7 +30,10 @@ func TestExample(t *testing.T) {
 		t.Error(err)
 	}
 
-	if res != "hello world" {
-		t.Error(res)
+	if res.PromptID != string(PPPromptEcho) {
+		t.Error(res.PromptID)
+	}
+	if res.ResponseMessage != "hello world" {
+		t.Error(res.ResponseMessage)
 	}
 }

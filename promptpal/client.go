@@ -16,7 +16,7 @@ type promptPalClient struct {
 }
 
 type PromptPalClient interface {
-	Execute(ctx context.Context, prompt string, variables any, userId *string) (string, error)
+	Execute(ctx context.Context, prompt string, variables any, userId *string) (*APIRunPromptResponse, error)
 }
 
 func NewPromptPalClient(endpoint string, token string) PromptPalClient {
@@ -34,8 +34,7 @@ func NewPromptPalClient(endpoint string, token string) PromptPalClient {
 	}
 }
 
-func (p *promptPalClient) Execute(ctx context.Context, prompt string, variables any, userId *string) (string, error) {
-
+func (p *promptPalClient) Execute(ctx context.Context, prompt string, variables any, userId *string) (*APIRunPromptResponse, error) {
 	payload := apiRunPromptPayload{
 		Variables: variables,
 	}
@@ -46,23 +45,23 @@ func (p *promptPalClient) Execute(ctx context.Context, prompt string, variables 
 	res, err := p.client.R().
 		SetBody(payload).
 		SetPathParam("pid", prompt).
-		SetResult(apiRunPromptResponse{}).
+		SetResult(APIRunPromptResponse{}).
 		SetError(errorResponse{}).
 		SetContext(ctx).
 		Post("/api/v1/public/prompts/run/{pid}")
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	if res.IsError() {
 		errMsg := res.Error().(*errorResponse)
-		return "", fmt.Errorf("error: %d %s", errMsg.ErrorCode, errMsg.ErrorMessage)
+		return nil, fmt.Errorf("error: %d %s", errMsg.ErrorCode, errMsg.ErrorMessage)
 	}
 
-	result, ok := res.Result().(*apiRunPromptResponse)
+	result, ok := res.Result().(*APIRunPromptResponse)
 	if !ok {
-		return "", errors.New("invalid prompt response type")
+		return nil, errors.New("invalid prompt response type")
 	}
-	return result.ResponseMessage, nil
+	return result, nil
 }

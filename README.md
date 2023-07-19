@@ -33,6 +33,10 @@ const (
 ```
 
 ```go
+import (
+	"github.com/PromptPal/go-sdk/promptpal"
+)
+
 func TestExample(t *testing.T) {
 	ctx := context.Background()
 	// create a client

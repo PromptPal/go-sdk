@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/PromptPal/go-sdk/compare/v0.1.0...v0.1.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* **types:** add configuration type ([a103a22](https://github.com/PromptPal/go-sdk/commit/a103a22c47faa556fb66946588d1f55de0991132))
+
 ## [0.1.0](https://github.com/PromptPal/go-sdk/compare/v0.0.1...v0.1.0) (2023-07-15)
 
 

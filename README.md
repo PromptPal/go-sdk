@@ -1,4 +1,4 @@
-# PromptPal Golang SDK
+# PromptPal Golang SDK [![Go Reference](https://pkg.go.dev/badge/github.com/PromptPal/go-sdk/promptpal.svg)](https://pkg.go.dev/github.com/PromptPal/go-sdk/promptpal)
 
 PromptPal is a software application designed to facilitate the collection, storage, modification, and enhancement of prompts.
 
@@ -40,7 +40,13 @@ import (
 func TestExample(t *testing.T) {
 	ctx := context.Background()
 	// create a client
-	c := promptpal.NewPromptPalClient(endpoint, token)
+	c := promptpal.NewPromptPalClient(
+		endpoint,
+		token,
+		promptpal.PromptPalClientOptions{
+			Timeout: &oneMinute,
+		},
+	)
 	// call the `Execute` function
 	res, err := c.Execute(
 		ctx,

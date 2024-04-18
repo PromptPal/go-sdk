@@ -19,13 +19,20 @@ type PromptPalClient interface {
 	Execute(ctx context.Context, prompt string, variables any, userId *string) (*APIRunPromptResponse, error)
 }
 
-func NewPromptPalClient(endpoint string, token string) PromptPalClient {
+type PromptPalClientOptions struct {
+	Timeout *time.Duration
+}
+
+func NewPromptPalClient(endpoint string, token string, options PromptPalClientOptions) PromptPalClient {
 	client := resty.
 		New().
-		SetTimeout(10 * time.Second).
 		SetBaseURL(endpoint).
 		SetAuthScheme("API").
 		SetAuthToken(token)
+
+	if options.Timeout != nil {
+		client.SetTimeout(*options.Timeout)
+	}
 
 	return &promptPalClient{
 		endpoint: endpoint,

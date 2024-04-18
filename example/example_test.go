@@ -3,6 +3,7 @@ package example
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/PromptPal/go-sdk/promptpal"
 )
@@ -15,7 +16,10 @@ const (
 func TestExample(t *testing.T) {
 	ctx := context.Background()
 	// create a client
-	c := promptpal.NewPromptPalClient(endpoint, token)
+	oneMinute := 1 * time.Minute
+	c := promptpal.NewPromptPalClient(endpoint, token, promptpal.PromptPalClientOptions{
+		Timeout: &oneMinute,
+	})
 	// call the `Execute` function
 	res, err := c.Execute(
 		ctx,

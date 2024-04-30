@@ -28,7 +28,9 @@ func NewPromptPalClient(endpoint string, token string, options PromptPalClientOp
 		New().
 		SetBaseURL(endpoint).
 		SetAuthScheme("API").
-		SetAuthToken(token)
+		SetAuthToken(token).
+		SetHeader("User-Agent", "PromptPal-GoSDK/0.1")
+		// TODO: collect and report metrics
 
 	if options.Timeout != nil {
 		client.SetTimeout(*options.Timeout)

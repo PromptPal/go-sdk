@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/PromptPal/go-sdk/compare/v0.1.2...v0.1.3) (2024-04-30)
+
+
+### Bug Fixes
+
+* **docs:** update README ([4ea9ca8](https://github.com/PromptPal/go-sdk/commit/4ea9ca8c3ab3f4a3d3745b1b38798e56460f9677))
+* **sdk:** add user agent info to client ([a4b63b2](https://github.com/PromptPal/go-sdk/commit/a4b63b2f904aa4260332eb63a0f61ccb254f6132))
+
 ## [0.1.2](https://github.com/PromptPal/go-sdk/compare/v0.1.1...v0.1.2) (2024-04-18)
 
 

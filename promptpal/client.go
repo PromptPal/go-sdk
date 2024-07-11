@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -92,6 +93,7 @@ func (p *promptPalClient) ExecuteStream(ctx context.Context, prompt string, vari
 		SetResult(APIRunPromptResponse{}).
 		SetError(errorResponse{}).
 		SetContext(ctx).
+		SetDoNotParseResponse(true).
 		Post("/api/v1/public/prompts/run/{pid}/stream")
 
 	if err != nil {
@@ -106,26 +108,25 @@ func (p *promptPalClient) ExecuteStream(ctx context.Context, prompt string, vari
 		if err := scanner.Err(); err != nil {
 			return nil, err
 		}
-		_res := scanner.Bytes()
+
+		_res := scanner.Text()
 		if len(_res) == 0 {
 			continue
 		}
 
-		var chunkData APIRunPromptResponse
+		if !strings.HasPrefix(_res, "data:") {
+			continue
+		}
 
-		err = json.Unmarshal(_res, &chunkData)
+		jsonBuf := []byte(_res[5:])
+		var chunkData APIRunPromptResponse
+		err = json.Unmarshal(jsonBuf, &chunkData)
 		if err != nil {
 			return nil, err
 		}
-
 		onData(&chunkData)
 		lastChunk = &chunkData
 	}
-
-	// if res.IsError() {
-	// 	errMsg := res.Error().(*errorResponse)
-	// 	return nil, fmt.Errorf("error: %d %s", errMsg.ErrorCode, errMsg.ErrorMessage)
-	// }
 
 	return lastChunk, nil
 }

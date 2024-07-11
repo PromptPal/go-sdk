@@ -1,9 +1,12 @@
 package promptpal
 
 import (
+	"bufio"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -17,6 +20,7 @@ type promptPalClient struct {
 
 type PromptPalClient interface {
 	Execute(ctx context.Context, prompt string, variables any, userId *string) (*APIRunPromptResponse, error)
+	ExecuteStream(ctx context.Context, prompt string, variables any, userId *string, onData func(data *APIRunPromptResponse) error) (*APIRunPromptResponse, error)
 }
 
 type PromptPalClientOptions struct {
@@ -73,4 +77,56 @@ func (p *promptPalClient) Execute(ctx context.Context, prompt string, variables 
 		return nil, errors.New("invalid prompt response type")
 	}
 	return result, nil
+}
+
+func (p *promptPalClient) ExecuteStream(ctx context.Context, prompt string, variables any, userId *string, onData func(data *APIRunPromptResponse) error) (*APIRunPromptResponse, error) {
+	payload := apiRunPromptPayload{
+		Variables: variables,
+	}
+	if userId != nil {
+		payload.UserId = *userId
+	}
+
+	resp, err := p.client.R().
+		SetBody(payload).
+		SetPathParam("pid", prompt).
+		SetResult(APIRunPromptResponse{}).
+		SetError(errorResponse{}).
+		SetContext(ctx).
+		SetDoNotParseResponse(true).
+		Post("/api/v1/public/prompts/run/{pid}/stream")
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.RawResponse.Body.Close()
+
+	scanner := bufio.NewScanner(resp.RawResponse.Body)
+	var lastChunk *APIRunPromptResponse
+	for scanner.Scan() {
+		if err := scanner.Err(); err != nil {
+			return nil, err
+		}
+
+		_res := scanner.Text()
+		if len(_res) == 0 {
+			continue
+		}
+
+		if !strings.HasPrefix(_res, "data:") {
+			continue
+		}
+
+		jsonBuf := []byte(_res[5:])
+		var chunkData APIRunPromptResponse
+		err = json.Unmarshal(jsonBuf, &chunkData)
+		if err != nil {
+			return nil, err
+		}
+		onData(&chunkData)
+		lastChunk = &chunkData
+	}
+
+	return lastChunk, nil
 }

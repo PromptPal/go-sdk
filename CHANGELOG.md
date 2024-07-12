@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/PromptPal/go-sdk/compare/v0.1.3...v0.2.0) (2024-07-11)
+
+
+### Features
+
+* **stream:** add streaming api support ([c55ba13](https://github.com/PromptPal/go-sdk/commit/c55ba13ee14675f185f371a26f62fbefbd756886))
+* **stream:** update streaming api support ([f1a83e5](https://github.com/PromptPal/go-sdk/commit/f1a83e532478e655711ba77500fe4bdb1c5e5627))
+
 ## [0.1.3](https://github.com/PromptPal/go-sdk/compare/v0.1.2...v0.1.3) (2024-04-30)
 
 

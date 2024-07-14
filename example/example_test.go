@@ -2,6 +2,7 @@ package example
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -10,7 +11,7 @@ import (
 
 const (
 	endpoint = "http://localhost:7788"
-	token    = "d6e9a6b170784fdfb4ef54417a32f391"
+	token    = "2919bb8f00ff44d7822ded033a7c5957"
 )
 
 func TestExample(t *testing.T) {
@@ -39,5 +40,31 @@ func TestExample(t *testing.T) {
 	}
 	if res.ResponseMessage != "hello world" {
 		t.Error(res.ResponseMessage)
+	}
+}
+
+func TestStreamExample(t *testing.T) {
+	ctx := context.Background()
+	// create a client
+	oneMinute := 1 * time.Minute
+	c := promptpal.NewPromptPalClient(endpoint, token, promptpal.PromptPalClientOptions{
+		Timeout: &oneMinute,
+	})
+	// call the `Execute` function
+	_, err := c.ExecuteStream(
+		ctx,
+		string(PPPromptEcho),
+		PPPromptEchoVariables{
+			Text: "hello world",
+		},
+		nil,
+		func(data *promptpal.APIRunPromptResponse) error {
+			fmt.Println(data.ResponseMessage)
+			return nil
+		},
+	)
+
+	if err != nil {
+		t.Error(err)
 	}
 }

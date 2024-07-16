@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/PromptPal/go-sdk/compare/v0.2.0...v0.2.1) (2024-07-16)
+
+
+### Bug Fixes
+
+* **ci:** return all data at final response ([3acfa28](https://github.com/PromptPal/go-sdk/commit/3acfa28726b30e969b8d6cf72334ad9a3887fd57))
+* **test:** add streaming api for test ([07b627e](https://github.com/PromptPal/go-sdk/commit/07b627e17f339875470f755f9e508aae4cfed268))
+
 ## [0.2.0](https://github.com/PromptPal/go-sdk/compare/v0.1.3...v0.2.0) (2024-07-11)
 
 

@@ -103,6 +103,7 @@ func (p *promptPalClient) ExecuteStream(ctx context.Context, prompt string, vari
 	defer resp.RawResponse.Body.Close()
 
 	scanner := bufio.NewScanner(resp.RawResponse.Body)
+	result := ""
 	var lastChunk *APIRunPromptResponse
 	for scanner.Scan() {
 		if err := scanner.Err(); err != nil {
@@ -125,8 +126,13 @@ func (p *promptPalClient) ExecuteStream(ctx context.Context, prompt string, vari
 			return nil, err
 		}
 		onData(&chunkData)
+		result += chunkData.ResponseMessage
 		lastChunk = &chunkData
 	}
 
-	return lastChunk, nil
+	return &APIRunPromptResponse{
+		PromptID:           lastChunk.PromptID,
+		ResponseTokenCount: lastChunk.ResponseTokenCount,
+		ResponseMessage:    result,
+	}, nil
 }

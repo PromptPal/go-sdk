@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/PromptPal/go-sdk/compare/v0.2.1...v0.3.0) (2024-07-17)
+
+
+### Features
+
+* **cache:** support server cache response ([af1fbb2](https://github.com/PromptPal/go-sdk/commit/af1fbb2ece18f68b0af5de5cfe0a5c1fe397adcf))
+
+
+### Bug Fixes
+
+* **ci:** upgrade to new release action ([af082af](https://github.com/PromptPal/go-sdk/commit/af082af5d9116207879513da710d63d246cf4380))
+
 ## [0.2.1](https://github.com/PromptPal/go-sdk/compare/v0.2.0...v0.2.1) (2024-07-16)
 
 

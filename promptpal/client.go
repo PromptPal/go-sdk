@@ -102,6 +102,16 @@ func (p *promptPalClient) ExecuteStream(ctx context.Context, prompt string, vari
 
 	defer resp.RawResponse.Body.Close()
 
+	// directly return the response if content has been cached
+	if strings.Contains(resp.Header().Get("Content-Type"), "application/json") {
+		var value *APIRunPromptResponse
+		err := json.NewDecoder(resp.RawResponse.Body).Decode(value)
+		if err != nil {
+			return nil, err
+		}
+		return value, nil
+	}
+
 	scanner := bufio.NewScanner(resp.RawResponse.Body)
 	result := ""
 	var lastChunk *APIRunPromptResponse

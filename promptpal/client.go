@@ -88,7 +88,7 @@ func (p *promptPalClient) Execute(ctx context.Context, prompt string, variables 
 		SetPathParam("pid", prompt)
 
 	if temporaryToken != "" {
-		req = req.SetHeader(TEMPORARY_TOKEN_HEADER, "Bearer "+temporaryToken)
+		req = req.SetHeader(TEMPORARY_TOKEN_HEADER, temporaryToken)
 	}
 
 	res, err := req.
@@ -131,7 +131,7 @@ func (p *promptPalClient) ExecuteStream(ctx context.Context, prompt string, vari
 		SetPathParam("pid", prompt)
 
 	if temporaryToken != "" {
-		req = req.SetHeader(TEMPORARY_TOKEN_HEADER, "Bearer "+temporaryToken)
+		req = req.SetHeader(TEMPORARY_TOKEN_HEADER, temporaryToken)
 	}
 
 	resp, err := req.

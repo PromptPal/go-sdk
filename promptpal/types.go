@@ -1,5 +1,7 @@
 package promptpal
 
+const TEMPORARY_TOKEN_HEADER = "X-TEMPORARY-TOKEN"
+
 type Configuration struct {
 	Input struct {
 		HTTP *struct {

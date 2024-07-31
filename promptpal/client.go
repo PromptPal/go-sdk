@@ -13,9 +13,10 @@ import (
 )
 
 type promptPalClient struct {
-	endpoint string
-	token    string
-	client   *resty.Client
+	endpoint            string
+	token               string
+	client              *resty.Client
+	applyTemporaryToken *func(ctx context.Context) (ApplyTemporaryTokenResult, error)
 }
 
 type PromptPalClient interface {
@@ -23,8 +24,15 @@ type PromptPalClient interface {
 	ExecuteStream(ctx context.Context, prompt string, variables any, userId *string, onData func(data *APIRunPromptResponse) error) (*APIRunPromptResponse, error)
 }
 
+type ApplyTemporaryTokenResult struct {
+	Token     string
+	Limit     int
+	Remaining int
+}
+
 type PromptPalClientOptions struct {
-	Timeout *time.Duration
+	Timeout             *time.Duration
+	applyTemporaryToken *func(ctx context.Context) (ApplyTemporaryTokenResult, error)
 }
 
 func NewPromptPalClient(endpoint string, token string, options PromptPalClientOptions) PromptPalClient {
@@ -41,10 +49,25 @@ func NewPromptPalClient(endpoint string, token string, options PromptPalClientOp
 	}
 
 	return &promptPalClient{
-		endpoint: endpoint,
-		token:    token,
-		client:   client,
+		endpoint:            endpoint,
+		token:               token,
+		client:              client,
+		applyTemporaryToken: options.applyTemporaryToken,
 	}
+}
+
+func (p *promptPalClient) ensureTemporaryToken(ctx context.Context) (string, error) {
+	if p.applyTemporaryToken == nil {
+		return "", nil
+	}
+
+	fn := *p.applyTemporaryToken
+	result, err := fn(ctx)
+
+	if err != nil {
+		return "", err
+	}
+	return result.Token, nil
 }
 
 func (p *promptPalClient) Execute(ctx context.Context, prompt string, variables any, userId *string) (*APIRunPromptResponse, error) {
@@ -55,9 +78,20 @@ func (p *promptPalClient) Execute(ctx context.Context, prompt string, variables 
 		payload.UserId = *userId
 	}
 
-	res, err := p.client.R().
+	temporaryToken, err := p.ensureTemporaryToken(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	req := p.client.R().
 		SetBody(payload).
-		SetPathParam("pid", prompt).
+		SetPathParam("pid", prompt)
+
+	if temporaryToken != "" {
+		req = req.SetHeader(TEMPORARY_TOKEN_HEADER, "Bearer "+temporaryToken)
+	}
+
+	res, err := req.
 		SetResult(APIRunPromptResponse{}).
 		SetError(errorResponse{}).
 		SetContext(ctx).
@@ -87,9 +121,20 @@ func (p *promptPalClient) ExecuteStream(ctx context.Context, prompt string, vari
 		payload.UserId = *userId
 	}
 
-	resp, err := p.client.R().
+	temporaryToken, err := p.ensureTemporaryToken(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	req := p.client.R().
 		SetBody(payload).
-		SetPathParam("pid", prompt).
+		SetPathParam("pid", prompt)
+
+	if temporaryToken != "" {
+		req = req.SetHeader(TEMPORARY_TOKEN_HEADER, "Bearer "+temporaryToken)
+	}
+
+	resp, err := req.
 		SetResult(APIRunPromptResponse{}).
 		SetError(errorResponse{}).
 		SetContext(ctx).

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/PromptPal/go-sdk/compare/v0.3.0...v0.4.0) (2024-08-01)
+
+
+### Features
+
+* **openToken:** add temporary token support ([e5185c8](https://github.com/PromptPal/go-sdk/commit/e5185c84bfc3a2b34faacb10df7cce7e7d390da7))
+
+
+### Bug Fixes
+
+* **openToken:** remove Bearer in temporary token header ([3fff3ce](https://github.com/PromptPal/go-sdk/commit/3fff3cebce96c302c869f5ce44dd4f3b814d3d26))
+
 ## [0.3.0](https://github.com/PromptPal/go-sdk/compare/v0.2.1...v0.3.0) (2024-07-17)
 
 

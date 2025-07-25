@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.1](https://github.com/PromptPal/go-sdk/compare/v0.4.0...v0.4.1) (2025-07-25)
+
+
+### Features
+
+* **claude:** add Claude Code configuration and workflows ([7df2ca4](https://github.com/PromptPal/go-sdk/commit/7df2ca4b589606ae06dd9eb9c312993f6d8d3f12))
+* **client:** make ApplyTemporaryToken configurable in client options ([9ac8bcb](https://github.com/PromptPal/go-sdk/commit/9ac8bcb136145f71a5656ce695eadd0195770966))
+* **client:** make ApplyTemporaryToken configurable in client options ([022ba5e](https://github.com/PromptPal/go-sdk/commit/022ba5e4e881fa20f538fed0a661ac7f32e39af1)), closes [#13](https://github.com/PromptPal/go-sdk/issues/13)
+
+
+### Miscellaneous Chores
+
+* release 0.4.1 ([a7c6b47](https://github.com/PromptPal/go-sdk/commit/a7c6b4778d5609f48b500bcb28ecfddfc1cea3ab))
+
 ## [0.4.0](https://github.com/PromptPal/go-sdk/compare/v0.3.0...v0.4.0) (2024-08-01)
 
 

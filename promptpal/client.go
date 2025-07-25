@@ -32,7 +32,7 @@ type ApplyTemporaryTokenResult struct {
 
 type PromptPalClientOptions struct {
 	Timeout             *time.Duration
-	applyTemporaryToken *func(ctx context.Context) (ApplyTemporaryTokenResult, error)
+	ApplyTemporaryToken *func(ctx context.Context) (ApplyTemporaryTokenResult, error)
 }
 
 func NewPromptPalClient(endpoint string, token string, options PromptPalClientOptions) PromptPalClient {
@@ -52,7 +52,7 @@ func NewPromptPalClient(endpoint string, token string, options PromptPalClientOp
 		endpoint:            endpoint,
 		token:               token,
 		client:              client,
-		applyTemporaryToken: options.applyTemporaryToken,
+		applyTemporaryToken: options.ApplyTemporaryToken,
 	}
 }
 

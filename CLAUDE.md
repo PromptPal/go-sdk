@@ -69,3 +69,16 @@ Tests require a running PromptPal server at `localhost:7788` with valid tokens. 
 
 - Go 1.20+
 - github.com/go-resty/resty/v2 - HTTP client library
+
+## Commit Rules
+
+You must follow the Conventional Commits rules, ensuring that the scope and module are included.
+
+For example:
+
+```md
+fix(home): add price link on home page
+feat(ai): add AI module
+refactor(cell): update cell module for better maintenance
+perf(parser): improve parser performance by over 30%
+```

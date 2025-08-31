@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.2](https://github.com/PromptPal/go-sdk/compare/v0.4.1...v0.4.2) (2025-08-31)
+
+
+### Features
+
+* **client:** add X-User-Id header support ([a1e3543](https://github.com/PromptPal/go-sdk/commit/a1e354369177b40815320179f05763c9ad780697))
+* **client:** add X-User-Id header support in Execute and ExecuteStream methods ([0265e31](https://github.com/PromptPal/go-sdk/commit/0265e31b2e96f545d98ca108007db54bb342318a)), closes [#15](https://github.com/PromptPal/go-sdk/issues/15)
+
+
+### Miscellaneous Chores
+
+* release 0.4.2 ([5b20ba4](https://github.com/PromptPal/go-sdk/commit/5b20ba4af3ca2a5a0c1c7debe3e4fbd3fb24bb58))
+
 ## [0.4.1](https://github.com/PromptPal/go-sdk/compare/v0.4.0...v0.4.1) (2025-07-25)
 
 

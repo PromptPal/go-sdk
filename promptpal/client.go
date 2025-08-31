@@ -91,6 +91,10 @@ func (p *promptPalClient) Execute(ctx context.Context, prompt string, variables 
 		req = req.SetHeader(TEMPORARY_TOKEN_HEADER, temporaryToken)
 	}
 
+	if userId != nil {
+		req = req.SetHeader("X-User-Id", *userId)
+	}
+
 	res, err := req.
 		SetResult(APIRunPromptResponse{}).
 		SetError(errorResponse{}).
@@ -132,6 +136,10 @@ func (p *promptPalClient) ExecuteStream(ctx context.Context, prompt string, vari
 
 	if temporaryToken != "" {
 		req = req.SetHeader(TEMPORARY_TOKEN_HEADER, temporaryToken)
+	}
+
+	if userId != nil {
+		req = req.SetHeader("X-User-Id", *userId)
 	}
 
 	resp, err := req.
